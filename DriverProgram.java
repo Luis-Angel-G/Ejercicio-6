@@ -1,7 +1,23 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Clase DriverProgram que contiene el método main para ejecutar el sistema.
+ * <p>
+ * Esta clase proporciona una interfaz de menú para registrar pedidos y generar reportes mensuales.
+ * Los usuarios pueden ingresar la capacidad y la distancia de un pedido,
+ * confirmar el registro del mismo, y ver un reporte de los costos mensuales.
+ * </p>
+ * 
+ * @author Luis Angel Girón Arévalo
+ * @date 28/10/2024
+ */
 public class DriverProgram {
+    /**
+     * Método principal que inicia la ejecución del programa.
+     * 
+     * @param args Argumentos de línea de comandos (no se utilizan en este programa).
+     */
     public static void main(String[] args) {
         Gestion gestion = new Gestion();
         Scanner scanner = new Scanner(System.in);
@@ -23,7 +39,6 @@ public class DriverProgram {
                         System.out.print("Ingrese distancia (km): ");
                         double distancia = scanner.nextDouble();
 
-                        // Obtener costo total sin registrar el pedido aún
                         double costoTotal = gestion.registrarPedido(capacidad, distancia);
                         System.out.println("Costo total: $" + costoTotal);
 
