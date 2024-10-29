@@ -17,14 +17,10 @@ public class Drone extends Transporte {
     }
 
     @Override
-    public boolean validarEntrega(){
-        boolean valido;
-        if (capacidad <= capacidadmax && distancia <= limite) {
-            valido = true;
+    public boolean validarEntrega() throws EntregaInvalidaExcepcion {
+        if (capacidad > capacidadmax || distancia > limite) {
+            throw new EntregaInvalidaExcepcion("Capacidad o distancia excede el límite permitido.");
         }
-        else {
-            valido = false;
-        }
-        return valido;
+        return true; // Entrega válida
     }
 }
