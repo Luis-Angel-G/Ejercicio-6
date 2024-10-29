@@ -2,11 +2,13 @@ public abstract class Transporte implements Interfaz {
     protected double tarifabase;
     protected double capacidad;
     protected double distancia;
+    protected int capacidadmax;
     
-    public Transporte(double tarifabase, double capacidad, double distancia) {
+    public Transporte(double tarifabase, double capacidad, double distancia, int capacidadmax) {
         this.tarifabase = tarifabase;
         this.capacidad = capacidad;
         this.distancia = distancia;
+        this.capacidadmax = capacidadmax;
     }
 
     public double getTarifabase() {
@@ -32,6 +34,14 @@ public abstract class Transporte implements Interfaz {
     public void setDistancia(double distancia) {
         this.distancia = distancia;
     }
+
+    public int getCapacidadmax() {
+        return capacidadmax;
+    }
+    
+    public void setCapacidadmax(int capacidadmax) {
+        this.capacidadmax = capacidadmax;
+    }
     
     @Override
     public double calcularCosto(){
@@ -40,7 +50,13 @@ public abstract class Transporte implements Interfaz {
     }
 
     @Override
-    public String validarEntrega(){
-        return "";
+    public boolean validarEntrega(){
+        boolean valido;
+        if (capacidad <= capacidadmax) {
+            valido = true;
+        }
+        else {
+            valido = false;
+        }
     }
 }
