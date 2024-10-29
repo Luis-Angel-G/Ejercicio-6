@@ -12,11 +12,18 @@ public class Gestion {
 
     public String registrarPedido(double capacidad, double distancia) throws IOException, EntregaInvalidaExcepcion {
         Transporte transporteElegido = seleccionarTransporte(capacidad, distancia);
-        
+
         if (transporteElegido != null) {
-            transporteElegido.validarEntrega(); // Llama al método que lanza la excepción
-            double costo = transporteElegido.calcularCosto();
-            return "Costo total: $" + costo;
+            // Manejo de la excepción al validar entrega
+            try {
+                transporteElegido.validarEntrega(); // Llama al método que lanza la excepción
+                double costo = transporteElegido.calcularCosto();
+                // Confirmar registro del pedido
+                confirmarRegistroPedido(transporteElegido);
+                return "Costo total: $" + costo;
+            } catch (EntregaInvalidaExcepcion e) {
+                return "Error en la entrega: " + e.getMessage();
+            }
         } else {
             return "No hay transporte disponible que cumpla con los requisitos.";
         }
@@ -27,7 +34,7 @@ public class Gestion {
             Pedido pedido = new Pedido(new Date(), transporte);
             pedidos.add(pedido);
             guardarPedidoCSV(pedido);
-            return true;  // Pedido registrado con éxito
+            return true; // Pedido registrado con éxito
         }
         return false; // Pedido no registrado
     }
@@ -39,15 +46,25 @@ public class Gestion {
         Drone drone = new Drone(capacidad, distancia, 10);
 
         // Validar cada transporte y seleccionar el más barato que cumpla los requisitos
-        if (drone.validarEntrega()) {
+        if (validarYSeleccionarTransporte(drone)) {
             return drone;
-        } else if (moto.validarEntrega()) {
+        } else if (validarYSeleccionarTransporte(moto)) {
             return moto;
-        } else if (camion.validarEntrega()) {
+        } else if (validarYSeleccionarTransporte(camion)) {
             return camion;
         }
 
         return null; // Ningún transporte cumple los requisitos
+    }
+
+    // Método para validar el transporte y manejar excepciones
+    private boolean validarYSeleccionarTransporte(Transporte transporte) {
+        try {
+            return transporte.validarEntrega(); // Llama al método que lanza la excepción
+        } catch (EntregaInvalidaExcepcion e) {
+            // Manejo de la excepción si es necesario
+            return false; // No se puede usar este transporte
+        }
     }
 
     public void guardarPedidoCSV(Pedido pedido) throws IOException {
@@ -70,26 +87,32 @@ public class Gestion {
 
         while ((linea = reader.readLine()) != null) {
             String[] datos = linea.split(",");
-            Date fecha = new Date(datos[0]);
+            Date fecha = new Date(datos[0]); // Esto puede causar problemas; considera usar un formato de fecha
             double costo = Double.parseDouble(datos[1]);
             String tipo = datos[2];
             double distancia = Double.parseDouble(datos[3]);
             double capacidad = Double.parseDouble(datos[4]);
 
-            Transporte transporte = null;
-            if (tipo.equals("Camion")) {
-                transporte = new Camion(capacidad, distancia, 5);
-            } else if (tipo.equals("Motocicleta")) {
-                transporte = new Motocicleta(capacidad, distancia);
-            } else if (tipo.equals("Drone")) {
-                transporte = new Drone(capacidad, distancia, 10);
-            }
-
+            Transporte transporte = crearTransporte(tipo, capacidad, distancia);
             Pedido pedido = new Pedido(fecha, transporte);
             pedidosCargados.add(pedido);
         }
         reader.close();
         return pedidosCargados;
+    }
+
+    // Método auxiliar para crear transporte según el tipo
+    private Transporte crearTransporte(String tipo, double capacidad, double distancia) {
+        switch (tipo) {
+            case "Camion":
+                return new Camion(capacidad, distancia, 5);
+            case "Motocicleta":
+                return new Motocicleta(capacidad, distancia);
+            case "Drone":
+                return new Drone(capacidad, distancia, 10);
+            default:
+                return null; // Tipo de transporte no reconocido
+        }
     }
 
     public double generarReporteMensual() throws IOException {
