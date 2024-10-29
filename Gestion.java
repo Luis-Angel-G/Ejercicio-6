@@ -6,13 +6,35 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Clase Gestion que maneja el registro y gestión de pedidos.
+ * <p>
+ * Esta clase permite registrar pedidos, seleccionar transporte adecuado,
+ * guardar pedidos en un archivo CSV y generar reportes mensuales.
+ * </p>
+ * 
+ * @author Luis Angel Girón Arévalo
+ * @date 28/10/2024
+ */
 public class Gestion {
     private ArrayList<Pedido> pedidos;
 
+    /**
+     * Constructor de la clase Gestion que inicializa la lista de pedidos.
+     */
     public Gestion() {
         pedidos = new ArrayList<>();
     }
 
+    /**
+     * Registra un pedido seleccionando un transporte que cumpla con los requisitos.
+     *
+     * @param capacidad Capacidad requerida para el transporte en kg.
+     * @param distancia Distancia del pedido en km.
+     * @return Costo total del pedido.
+     * @throws IOException Si ocurre un error al guardar el pedido.
+     * @throws EntregaInvalidaExcepcion Si no hay transporte válido.
+     */
     public double registrarPedido(double capacidad, double distancia) throws IOException, EntregaInvalidaExcepcion {
         Transporte transporteElegido = seleccionarTransporte(capacidad, distancia);
 
@@ -28,6 +50,13 @@ public class Gestion {
         }
     }
 
+    /**
+     * Confirma el registro de un pedido y lo guarda en un archivo CSV.
+     *
+     * @param transporte El transporte asociado al pedido.
+     * @return true si el pedido se registró exitosamente, false en caso contrario.
+     * @throws IOException Si ocurre un error al guardar el pedido.
+     */
     public boolean confirmarRegistroPedido(Transporte transporte) throws IOException {
         if (transporte != null) {
             Pedido pedido = new Pedido(new Date(), transporte);
@@ -38,6 +67,13 @@ public class Gestion {
         return false;
     }
 
+    /**
+     * Selecciona un transporte basado en la capacidad y la distancia requeridas.
+     *
+     * @param capacidad Capacidad requerida para el transporte en kg.
+     * @param distancia Distancia del pedido en km.
+     * @return Un objeto Transporte que cumpla con los requisitos.
+     */
     public Transporte seleccionarTransporte(double capacidad, double distancia) {
         Camion camion = new Camion(capacidad, distancia, 5);
         Motocicleta moto = new Motocicleta(capacidad, distancia);
@@ -54,6 +90,12 @@ public class Gestion {
         return null;
     }
 
+    /**
+     * Valida si un transporte puede realizar la entrega.
+     *
+     * @param transporte El transporte a validar.
+     * @return true si el transporte puede realizar la entrega, false en caso contrario.
+     */
     private boolean validarYSeleccionarTransporte(Transporte transporte) {
         try {
             return transporte.validarEntrega();
@@ -62,6 +104,12 @@ public class Gestion {
         }
     }
 
+    /**
+     * Guarda un pedido en un archivo CSV.
+     *
+     * @param pedido El pedido a guardar.
+     * @throws IOException Si ocurre un error al guardar el pedido en el archivo.
+     */
     public void guardarPedidoCSV(Pedido pedido) throws IOException {
         FileWriter writer = new FileWriter("pedidos.csv", true);
         BufferedWriter buffer = new BufferedWriter(writer);
@@ -79,6 +127,12 @@ public class Gestion {
         buffer.close();
     }
     
+    /**
+     * Carga los pedidos desde un archivo CSV.
+     *
+     * @return Una lista de pedidos cargados.
+     * @throws IOException Si ocurre un error al leer el archivo CSV.
+     */
     public List<Pedido> cargarPedidosCSV() throws IOException {
         List<Pedido> pedidosCargados = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader("pedidos.csv"));
@@ -108,6 +162,14 @@ public class Gestion {
         return pedidosCargados;
     }    
 
+    /**
+     * Crea un objeto Transporte basado en el tipo especificado.
+     *
+     * @param tipo Tipo de transporte (Camion, Motocicleta, Drone).
+     * @param capacidad Capacidad del transporte en kg.
+     * @param distancia Distancia del pedido en km.
+     * @return Un objeto Transporte del tipo especificado.
+     */
     private Transporte crearTransporte(String tipo, double capacidad, double distancia) {
         switch (tipo) {
             case "Camion":
@@ -121,6 +183,12 @@ public class Gestion {
         }
     }
 
+    /**
+     * Genera un reporte mensual del costo total de los pedidos.
+     *
+     * @return El costo total de los pedidos en el mes actual.
+     * @throws IOException Si ocurre un error al cargar los pedidos desde el archivo.
+     */
     public double generarReporteMensual() throws IOException {
         List<Pedido> pedidosMensuales = cargarPedidosCSV();
         double totalCosto = 0;
