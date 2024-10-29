@@ -4,11 +4,9 @@ public abstract class Transporte implements Interfaz {
     protected double distancia;
     protected int capacidadmax;
     
-    public Transporte(double tarifabase, double capacidad, double distancia, int capacidadmax) {
-        this.tarifabase = tarifabase;
+    public Transporte(double capacidad, double distancia) {
         this.capacidad = capacidad;
         this.distancia = distancia;
-        this.capacidadmax = capacidadmax;
     }
 
     public double getTarifabase() {
