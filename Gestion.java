@@ -40,7 +40,6 @@ public class Gestion {
         return false;
     }
 
-    // Cambiar la visibilidad a public
     public Transporte seleccionarTransporte(double capacidad, double distancia) {
         Camion camion = new Camion(capacidad, distancia, 5);
         Motocicleta moto = new Motocicleta(capacidad, distancia);
@@ -91,6 +90,7 @@ public class Gestion {
                 fecha = formatoFecha.parse(datos[0]);
             } catch (ParseException e) {
                 e.printStackTrace();
+                continue; // Si hay un error, continúa con la siguiente línea
             }
             double costo = Double.parseDouble(datos[1]);
             String tipo = datos[2];
@@ -99,7 +99,7 @@ public class Gestion {
 
             Transporte transporte = crearTransporte(tipo, capacidad, distancia);
             Pedido pedido = new Pedido(fecha, transporte);
-            pedido.setCostototal(costo); // Asegúrate de que tu clase Pedido tenga este método
+            pedido.setCostototal(costo);
             pedidosCargados.add(pedido);
         }
         reader.close();
