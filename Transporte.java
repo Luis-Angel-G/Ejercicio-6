@@ -41,6 +41,6 @@ public abstract class Transporte implements Interfaz {
 
     @Override
     public String validarEntrega(){
-        
+        return "";
     }
 }
