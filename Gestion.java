@@ -87,7 +87,7 @@ public class Gestion {
 
         while ((linea = reader.readLine()) != null) {
             String[] datos = linea.split(",");
-            Date fecha = new Date(datos[0]); // Esto puede causar problemas; considera usar un formato de fecha
+            Date fecha = new Date(datos[0]);
             double costo = Double.parseDouble(datos[1]);
             String tipo = datos[2];
             double distancia = Double.parseDouble(datos[3]);
