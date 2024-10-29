@@ -12,8 +12,8 @@ public class Camion extends Transporte {
         return descuento;
     }
 
-    public void setDescuento(double descuento) {
-        this.descuento = descuento;
+    public void setDescuento() {
+        this.descuento = 5;
     }
 
     @Override
