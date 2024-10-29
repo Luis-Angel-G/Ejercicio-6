@@ -1,11 +1,14 @@
 import java.util.Date;
 
 public class Pedido {
-    public Date fecha;
-    public double costototal;
-    
-    public Pedido(Date fecha) {
+    private Date fecha;
+    private double costototal;
+    private Transporte transporte;
+
+    public Pedido(Date fecha, Transporte transporte) {
         this.fecha = fecha;
+        this.transporte = transporte;
+        this.costototal = transporte.calcularCosto();
     }
 
     public Date getFecha() {
@@ -20,7 +23,7 @@ public class Pedido {
         return costototal;
     }
 
-    public void setCostototal(calcularCosto()) {
-        this.costototal = calcularCosto();
+    public void setCostototal(double costototal) {
+        this.costototal = costototal;
     }
 }
