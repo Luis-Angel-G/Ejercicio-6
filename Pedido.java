@@ -8,7 +8,7 @@ public class Pedido {
     public Pedido(Date fecha, Transporte transporte) {
         this.fecha = fecha;
         this.transporte = transporte;
-        this.costototal = transporte.calcularCosto(); // Asumiendo que el método calcularCosto está definido en Transporte
+        this.costototal = transporte.calcularCosto();
     }
 
     public Date getFecha() {
@@ -27,7 +27,7 @@ public class Pedido {
         this.costototal = costototal;
     }
 
-    public Transporte getTransporte() { // Método agregado
+    public Transporte getTransporte() {
         return transporte;
     }
 }
