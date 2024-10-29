@@ -1,4 +1,4 @@
 public interface Interfaz {
     double calcularCosto();
-    boolean validarEntrega();
+    boolean validarEntrega() throws EntregaInvalidaExcepcion;
 }
