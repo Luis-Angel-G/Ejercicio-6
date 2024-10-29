@@ -8,11 +8,11 @@ public class DriverProgram {
         boolean continuar = true;
 
         while (continuar) {
-            System.out.println("Menú de Opciones:");
+            System.out.println("Menu de Opciones:");
             System.out.println("1. Registrar Pedido");
             System.out.println("2. Generar Reporte Mensual");
             System.out.println("3. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Seleccione una opcion: ");
             int opcion = scanner.nextInt();
 
             switch (opcion) {
@@ -65,7 +65,7 @@ public class DriverProgram {
                     break;
 
                 default:
-                    System.out.println("Opción no válida. Intente de nuevo.");
+                    System.out.println("Opcion no valida. Intente de nuevo.");
             }
         }
         scanner.close();
