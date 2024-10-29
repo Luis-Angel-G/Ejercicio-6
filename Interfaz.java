@@ -1,4 +1,4 @@
 public interface Interfaz {
     double calcularCosto();
-    String validarEntrega();
+    boolean validarEntrega();
 }
