@@ -58,5 +58,6 @@ public abstract class Transporte implements Interfaz {
         else {
             valido = false;
         }
+        return valido;
     }
 }
