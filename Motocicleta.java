@@ -1,6 +1,6 @@
 public class Motocicleta extends Transporte {
     public Motocicleta(double capacidad, double distancia) {
-        super(tarifabase, capacidad, distancia, capacidadmax);
+        super(capacidad, distancia);
         setTarifabase(10);
         setCapacidadmax(50);
     }
