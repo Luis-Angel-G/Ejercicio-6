@@ -45,11 +45,18 @@ public class DriverProgram {
                         }
                     } catch (IOException e) {
                         System.out.println("Error al guardar el pedido.");
+                    } catch (EntregaInvalidaExcepcion e) {
+                        System.out.println("Error en la entrega: " + e.getMessage());
                     }
                     break;
 
                 case 2:
-                    // Llamada a generar reporte mensual (modificar para evitar System.out.println en Gestion)
+                    try {
+                        double totalCosto = gestion.generarReporteMensual();
+                        System.out.println("Total de costos de pedidos en el mes actual: $" + totalCosto);
+                    } catch (IOException e) {
+                        System.out.println("Error al generar el reporte.");
+                    }
                     break;
 
                 case 3:
