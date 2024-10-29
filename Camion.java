@@ -1,8 +1,8 @@
 public class Camion extends Transporte {
     public double descuento;
 
-    public Camion(double tarifabase, double capacidad, double distancia, int capacidadmax, double descuento) {
-        super(tarifabase, capacidad, distancia, capacidadmax);
+    public Camion(double capacidad, double distancia, double descuento) {
+        super(capacidad, distancia);
         this.descuento = descuento;
     }
 
@@ -13,4 +13,6 @@ public class Camion extends Transporte {
     public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
+
+    public void setTarifabase(20);
 }
