@@ -92,7 +92,7 @@ public class Gestion {
         return pedidosCargados;
     }
 
-    public void generarReporteMensual() throws IOException {
+    public double generarReporteMensual() throws IOException {
         List<Pedido> pedidosMensuales = cargarPedidosCSV();
         double totalCosto = 0;
 
@@ -104,6 +104,6 @@ public class Gestion {
             }
         }
 
-        System.out.println("Total de costos de pedidos en el mes actual: $" + totalCosto);
+        return totalCosto; // Retorna el total de costos
     }
 }
