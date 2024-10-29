@@ -40,7 +40,8 @@ public class Gestion {
         return false;
     }
 
-    private Transporte seleccionarTransporte(double capacidad, double distancia) {
+    // Cambiar la visibilidad a public
+    public Transporte seleccionarTransporte(double capacidad, double distancia) {
         Camion camion = new Camion(capacidad, distancia, 5);
         Motocicleta moto = new Motocicleta(capacidad, distancia);
         Drone drone = new Drone(capacidad, distancia, 10);
@@ -89,7 +90,7 @@ public class Gestion {
             try {
                 fecha = formatoFecha.parse(datos[0]);
             } catch (ParseException e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
             double costo = Double.parseDouble(datos[1]);
             String tipo = datos[2];
