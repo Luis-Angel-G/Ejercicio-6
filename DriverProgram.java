@@ -23,30 +23,29 @@ public class DriverProgram {
                         System.out.print("Ingrese distancia (km): ");
                         double distancia = scanner.nextDouble();
 
-                        String mensajeCosto = gestion.registrarPedido(capacidad, distancia);
-                        System.out.println(mensajeCosto);
+                        // Obtener costo total sin registrar el pedido aún
+                        double costoTotal = gestion.registrarPedido(capacidad, distancia);
+                        System.out.println("Costo total: $" + costoTotal);
 
-                        if (!mensajeCosto.contains("No hay transporte")) {
-                            System.out.print("¿Desea confirmar el pedido? (s/n): ");
-                            String confirmacion = scanner.next();
+                        System.out.print("¿Desea confirmar el pedido? (s/n): ");
+                        String confirmacion = scanner.next();
 
-                            if (confirmacion.equalsIgnoreCase("s")) {
-                                Transporte transporte = gestion.seleccionarTransporte(capacidad, distancia);
-                                boolean exito = gestion.confirmarRegistroPedido(transporte);
+                        if (confirmacion.equalsIgnoreCase("s")) {
+                            Transporte transporte = gestion.seleccionarTransporte(capacidad, distancia);
+                            boolean exito = gestion.confirmarRegistroPedido(transporte);
 
-                                if (exito) {
-                                    System.out.println("Pedido registrado exitosamente.");
-                                } else {
-                                    System.out.println("Error al registrar el pedido.");
-                                }
+                            if (exito) {
+                                System.out.println("Pedido registrado exitosamente.");
                             } else {
-                                System.out.println("Pedido cancelado.");
+                                System.out.println("Error al registrar el pedido.");
                             }
+                        } else {
+                            System.out.println("Pedido cancelado.");
                         }
                     } catch (IOException e) {
                         System.out.println("Error al guardar el pedido.");
                     } catch (EntregaInvalidaExcepcion e) {
-                        System.out.println("Error en la entrega: " + e.getMessage());
+                        System.out.println(e.getMessage());
                     }
                     break;
 
