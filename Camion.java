@@ -18,7 +18,10 @@ public class Camion extends Transporte {
 
     @Override
     public double calcularCosto() {
-        double costot = super.calcularCosto() - (super.calcularCosto() * (descuento / 100));
-        return costot;
+        double costo = super.calcularCosto();
+        if (distancia > 100) {
+            costo -= costo * (descuento / 100);
+        }
+        return costo;
     }
 }
