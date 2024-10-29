@@ -67,9 +67,13 @@ public class Gestion {
     public void guardarPedidoCSV(Pedido pedido) throws IOException {
         FileWriter writer = new FileWriter("pedidos.csv", true);
         BufferedWriter buffer = new BufferedWriter(writer);
-
+    
+        // Usar el formato adecuado para la fecha
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fechaFormateada = formatoFecha.format(pedido.getFecha());
+    
         // Formato CSV: fecha,costo total,tipo de transporte,distancia,capacidad
-        buffer.write(pedido.getFecha() + "," + pedido.getCostototal() + "," +
+        buffer.write(fechaFormateada + "," + pedido.getCostototal() + "," +
                 pedido.getTransporte().getClass().getSimpleName() + "," +
                 pedido.getTransporte().getDistancia() + "," +
                 pedido.getTransporte().getCapacidad());
@@ -81,8 +85,8 @@ public class Gestion {
         List<Pedido> pedidosCargados = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader("pedidos.csv"));
         String linea;
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
         while ((linea = reader.readLine()) != null) {
             String[] datos = linea.split(",");
             Date fecha = null;
@@ -96,7 +100,7 @@ public class Gestion {
             String tipo = datos[2];
             double distancia = Double.parseDouble(datos[3]);
             double capacidad = Double.parseDouble(datos[4]);
-
+    
             Transporte transporte = crearTransporte(tipo, capacidad, distancia);
             Pedido pedido = new Pedido(fecha, transporte);
             pedido.setCostototal(costo);
@@ -104,7 +108,7 @@ public class Gestion {
         }
         reader.close();
         return pedidosCargados;
-    }
+    }    
 
     private Transporte crearTransporte(String tipo, double capacidad, double distancia) {
         switch (tipo) {
