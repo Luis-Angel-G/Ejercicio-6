@@ -4,17 +4,18 @@ import java.util.Date;
 import java.util.List;
 
 public class Gestion {
+    private ArrayList<Pedido> pedidos;
 
     public Gestion() {
-        private ArrayListList<Pedido> pedidos =new ArrayList<>();
+        pedidos = new ArrayList<>();
     }
 
-    public String registrarPedido(double capacidad, double distancia) throws IOException {
+    public String registrarPedido(double capacidad, double distancia) throws IOException, EntregaInvalidaExcepcion {
         Transporte transporteElegido = seleccionarTransporte(capacidad, distancia);
         
         if (transporteElegido != null) {
+            transporteElegido.validarEntrega(); // Llama al método que lanza la excepción
             double costo = transporteElegido.calcularCosto();
-            // Retorna el costo total y pide confirmación en DriverProgram
             return "Costo total: $" + costo;
         } else {
             return "No hay transporte disponible que cumpla con los requisitos.";
@@ -89,5 +90,20 @@ public class Gestion {
         }
         reader.close();
         return pedidosCargados;
+    }
+
+    public void generarReporteMensual() throws IOException {
+        List<Pedido> pedidosMensuales = cargarPedidosCSV();
+        double totalCosto = 0;
+
+        Date fechaActual = new Date();
+        for (Pedido pedido : pedidosMensuales) {
+            if (pedido.getFecha().getMonth() == fechaActual.getMonth() &&
+                pedido.getFecha().getYear() == fechaActual.getYear()) {
+                totalCosto += pedido.getCostototal();
+            }
+        }
+
+        System.out.println("Total de costos de pedidos en el mes actual: $" + totalCosto);
     }
 }
