@@ -1,5 +1,8 @@
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,11 +17,9 @@ public class Gestion {
         Transporte transporteElegido = seleccionarTransporte(capacidad, distancia);
 
         if (transporteElegido != null) {
-            // Manejo de la excepción al validar entrega
             try {
-                transporteElegido.validarEntrega(); // Llama al método que lanza la excepción
+                transporteElegido.validarEntrega();
                 double costo = transporteElegido.calcularCosto();
-                // Confirmar registro del pedido
                 confirmarRegistroPedido(transporteElegido);
                 return "Costo total: $" + costo;
             } catch (EntregaInvalidaExcepcion e) {
@@ -34,18 +35,16 @@ public class Gestion {
             Pedido pedido = new Pedido(new Date(), transporte);
             pedidos.add(pedido);
             guardarPedidoCSV(pedido);
-            return true; // Pedido registrado con éxito
+            return true;
         }
-        return false; // Pedido no registrado
+        return false;
     }
 
     private Transporte seleccionarTransporte(double capacidad, double distancia) {
-        // Crear instancias de cada tipo de transporte
         Camion camion = new Camion(capacidad, distancia, 5);
         Motocicleta moto = new Motocicleta(capacidad, distancia);
         Drone drone = new Drone(capacidad, distancia, 10);
 
-        // Validar cada transporte y seleccionar el más barato que cumpla los requisitos
         if (validarYSeleccionarTransporte(drone)) {
             return drone;
         } else if (validarYSeleccionarTransporte(moto)) {
@@ -54,16 +53,14 @@ public class Gestion {
             return camion;
         }
 
-        return null; // Ningún transporte cumple los requisitos
+        return null;
     }
 
-    // Método para validar el transporte y manejar excepciones
     private boolean validarYSeleccionarTransporte(Transporte transporte) {
         try {
-            return transporte.validarEntrega(); // Llama al método que lanza la excepción
+            return transporte.validarEntrega();
         } catch (EntregaInvalidaExcepcion e) {
-            // Manejo de la excepción si es necesario
-            return false; // No se puede usar este transporte
+            return false;
         }
     }
 
@@ -84,10 +81,16 @@ public class Gestion {
         List<Pedido> pedidosCargados = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader("pedidos.csv"));
         String linea;
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
         while ((linea = reader.readLine()) != null) {
             String[] datos = linea.split(",");
-            Date fecha = new Date(datos[0]); // Ajusta este método si es necesario
+            Date fecha = null;
+            try {
+                fecha = formatoFecha.parse(datos[0]);
+            } catch (ParseException e) {
+                e.printStackTrace(); 
+            }
             double costo = Double.parseDouble(datos[1]);
             String tipo = datos[2];
             double distancia = Double.parseDouble(datos[3]);
@@ -95,13 +98,13 @@ public class Gestion {
 
             Transporte transporte = crearTransporte(tipo, capacidad, distancia);
             Pedido pedido = new Pedido(fecha, transporte);
+            pedido.setCostototal(costo); // Asegúrate de que tu clase Pedido tenga este método
             pedidosCargados.add(pedido);
         }
         reader.close();
         return pedidosCargados;
     }
 
-    // Método auxiliar para crear transporte según el tipo
     private Transporte crearTransporte(String tipo, double capacidad, double distancia) {
         switch (tipo) {
             case "Camion":
@@ -111,7 +114,7 @@ public class Gestion {
             case "Drone":
                 return new Drone(capacidad, distancia, 10);
             default:
-                return null; // Tipo de transporte no reconocido
+                return null;
         }
     }
 
@@ -120,13 +123,21 @@ public class Gestion {
         double totalCosto = 0;
 
         Date fechaActual = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaActual);
+        int mesActual = calendar.get(Calendar.MONTH);
+        int anioActual = calendar.get(Calendar.YEAR);
+
         for (Pedido pedido : pedidosMensuales) {
-            if (pedido.getFecha().getMonth() == fechaActual.getMonth() &&
-                pedido.getFecha().getYear() == fechaActual.getYear()) {
+            calendar.setTime(pedido.getFecha());
+            int mesPedido = calendar.get(Calendar.MONTH);
+            int anioPedido = calendar.get(Calendar.YEAR);
+
+            if (mesPedido == mesActual && anioPedido == anioActual) {
                 totalCosto += pedido.getCostototal();
             }
         }
 
-        return totalCosto; // Retorna el total de costos
+        return totalCosto; 
     }
 }
