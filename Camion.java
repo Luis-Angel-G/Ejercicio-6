@@ -6,5 +6,11 @@ public class Camion extends Transporte {
         this.descuento = descuento;
     }
 
-    p
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
 }
