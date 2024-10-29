@@ -1,5 +1,5 @@
 /**
- * @author Luis Ángel Girón Arévalo
+ * @author Luis Angel Giron Arevalo
  * @date Fecha de creación: 2024-10-24
  * @date Fecha de última modificación: 2024-10-28
  * Descripción: Clase que representa una motocicleta.
