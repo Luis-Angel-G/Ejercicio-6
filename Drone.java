@@ -1,17 +1,19 @@
 public class Drone extends Transporte {
     public int limite;
 
-    public Drone(double tarifabase, double capacidad, double distancia, int capacidadmax, int limite) {
-        super(tarifabase, capacidad, distancia, capacidadmax);
+    public Drone(double capacidad, double distancia, int limite) {
+        super(capacidad, distancia);
         this.limite = limite;
+        setTarifabase(5);
+        setCapacidadmax(5);
     }
 
     public int getLimite() {
         return limite;
     }
 
-    public void setLimite(int limite) {
-        this.limite = limite;
+    public void setLimite() {
+        this.limite = 10;
     }
 
     @Override
