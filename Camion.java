@@ -4,6 +4,8 @@ public class Camion extends Transporte {
     public Camion(double capacidad, double distancia, double descuento) {
         super(capacidad, distancia);
         this.descuento = descuento;
+        setTarifabase(20);
+        setCapacidadmax(1000);
     }
 
     public double getDescuento() {
@@ -14,5 +16,9 @@ public class Camion extends Transporte {
         this.descuento = descuento;
     }
 
-    public void setTarifabase(20);
+    @Override
+    public double calcularCosto() {
+        double costot = super.calcularCosto() - (super.calcularCosto() * (descuento / 100));
+        return costot;
+    }
 }
