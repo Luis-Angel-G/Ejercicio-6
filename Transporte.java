@@ -48,14 +48,10 @@ public abstract class Transporte implements Interfaz {
     }
 
     @Override
-    public boolean validarEntrega(){
-        boolean valido;
-        if (capacidad <= capacidadmax) {
-            valido = true;
+    public boolean validarEntrega() throws EntregaInvalidaExcepcion {
+        if (capacidad > capacidadmax) {
+            throw new EntregaInvalidaExcepcion("Capacidad excede el límite permitido.");
         }
-        else {
-            valido = false;
-        }
-        return valido;
+        return true; // Entrega válida
     }
 }
