@@ -13,20 +13,18 @@ public class Gestion {
         pedidos = new ArrayList<>();
     }
 
-    public String registrarPedido(double capacidad, double distancia) throws IOException, EntregaInvalidaExcepcion {
+    public double registrarPedido(double capacidad, double distancia) throws IOException, EntregaInvalidaExcepcion {
         Transporte transporteElegido = seleccionarTransporte(capacidad, distancia);
 
         if (transporteElegido != null) {
             try {
                 transporteElegido.validarEntrega();
-                double costo = transporteElegido.calcularCosto();
-                confirmarRegistroPedido(transporteElegido);
-                return "Costo total: $" + costo;
+                return transporteElegido.calcularCosto();
             } catch (EntregaInvalidaExcepcion e) {
-                return "Error en la entrega: " + e.getMessage();
+                throw new EntregaInvalidaExcepcion("Error en la entrega: " + e.getMessage());
             }
         } else {
-            return "No hay transporte disponible que cumpla con los requisitos.";
+            throw new EntregaInvalidaExcepcion("No hay transporte disponible que cumpla con los requisitos.");
         }
     }
 
